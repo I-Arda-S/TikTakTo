@@ -23,6 +23,7 @@ namespace Satranc
         private bool turXde = false;
         private string[,] matrisTahta;
         private int N=3;
+        private bool dur;
 
         private void OyunTahtasiniOlustur(TableLayoutPanel tahta, int en, int boy)
         {
@@ -30,6 +31,7 @@ namespace Satranc
             tahta.RowStyles.Clear();
             tahta.ColumnStyles.Clear();
             matrisTahta = new string[en, boy];
+            dur = false;
 
             tahta.RowCount = 0;
             tahta.ColumnCount = 0;
@@ -72,6 +74,8 @@ namespace Satranc
 
         private void Kare_click(object sender, EventArgs e)
         {
+            if(dur) return;
+
             Button kare = sender as Button;
             var konum = tictac.GetPositionFromControl(kare);
             int x = konum.Row; 
@@ -90,9 +94,12 @@ namespace Satranc
                 turXde = true;
             }
 
-
             if(KontrolEt(x,y,kare.Text))
+            {
                 MessageBox.Show("Kazandın.");
+                dur=true;
+            }
+                
             kare.Enabled = false;
         }
 
@@ -106,9 +113,8 @@ namespace Satranc
                 return true;
             if(DikeyKontrol(sutun,isaret,kazanmakİcinGerekenKareSayisi)) 
                 return true;
-
-            // 3. Çapraz Kontrol (Eğer tıklanan yer çapraz hat üzerindeyse)
-            //if(CaprazBak(isaret)) return true;
+            if(CaprazKontrol(satir,sutun,isaret,kazanmakİcinGerekenKareSayisi)) 
+                return true;
 
             return false;
         }
@@ -148,15 +154,34 @@ namespace Satranc
             }
             return false;
         }
-        /*private bool YatayBak(int r,string isaret)
+        private bool CaprazKontrol(int x, int y, string isaret, int gerekenSira)
         {
-            for(int c = 0;c < tableLayoutPanel1.ColumnCount;c++)
-            {
-                if(GetCellText(r,c) != isaret) return false;
-            }
-            return true;
+            if(KareleriSay(x,y,-1,-1,isaret) + KareleriSay(x,y,1,1,isaret) + 1 >= gerekenSira) 
+                return true; // '\'
+
+            if(KareleriSay(x,y,-1,1,isaret) + KareleriSay(x,y,1,-1,isaret) + 1 >= gerekenSira) 
+                return true; // '/'
+
+            // Yatay ve Dikeyi de buna benzer şekilde kontrol edebilirmiş, gerekirse onları buna uyarla.
+
+            return false;
         }
-        private bool CaprazBak(string isaret)
+        private int KareleriSay(int x, int y, int dx, int dy, string isaret)
+        {
+            int sayac = 0;
+            int nx = x + dx;
+            int ny = y + dy;
+
+            while(nx >= 0 && nx<N && ny >= 0 && ny<N && matrisTahta[nx,ny]==isaret)
+            {
+                sayac++;
+                nx += dx;
+                ny += dy;
+            }
+            return sayac;
+        }
+
+        /*private bool CaprazBak(string isaret)
         {
             bool solUst = true;
             for(int i = 0;i < tableLayoutPanel1.RowCount;i++)

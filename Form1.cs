@@ -20,18 +20,24 @@ namespace Satranc
             OyunTahtasiniOlustur(tictac, 3, 3);
         }
 
-        private bool turXde = false;
+        private bool turXde;
         private string[,] matrisTahta;
         private int N=3;
+        private int Nkosul;
         private bool dur;
 
         private void OyunTahtasiniOlustur(TableLayoutPanel tahta, int en, int boy)
         {
+            // Bunlar ana işlevle alakasız ancak her yeni oyunda atanmaları gerekli.
+            matrisTahta = new string[en,boy];
+            dur = false;
+            turXde = false;
+            if(N >= 5)  Nkosul = 5;
+            else        Nkosul = N;
+
             tahta.Controls.Clear();
             tahta.RowStyles.Clear();
             tahta.ColumnStyles.Clear();
-            matrisTahta = new string[en, boy];
-            dur = false;
 
             tahta.RowCount = 0;
             tahta.ColumnCount = 0;
@@ -53,7 +59,7 @@ namespace Satranc
                         Tag = new Point(i,j),
                         Margin = new Padding(0),
                         Font = new Font("Arial",fontBoyutu,FontStyle.Regular),
-                        BackColor = Color.Brown
+                        BackColor = Color.PaleTurquoise
                     };
                     //if((j%2==0 && i%2==0) || (j%2!=0 && i%2!=0))
                     //kare.Text = "X";
@@ -68,7 +74,6 @@ namespace Satranc
         private void btnSifirla_Click(object sender,EventArgs e)
         {
             N = BoyutSec.SelectedIndex+3;
-            turXde = false;
             OyunTahtasiniOlustur(tictac,N,N);
         }
 
@@ -103,66 +108,18 @@ namespace Satranc
             kare.Enabled = false;
         }
 
-        private bool KontrolEt(int satir,int sutun,string isaret)
+        private bool KontrolEt(int x, int y, string isaret)
         {
-            int kazanmakİcinGerekenKareSayisi = N; // Mesela 3x3'te ardışık 3 tane aynı olunca kazanılır ya onu kast ettim. Çok kare olduuğnda da 5'i koşul sağlamak standart imiş.
-            if(N>5)
-                kazanmakİcinGerekenKareSayisi=5;
+            if(KareleriSay(x,y,-1,-1,isaret) + KareleriSay(x,y,1,1,isaret) + 1 >= Nkosul) return true; // '\'
 
-            if(YatayKontrol(satir,isaret,kazanmakİcinGerekenKareSayisi)) 
-                return true;
-            if(DikeyKontrol(sutun,isaret,kazanmakİcinGerekenKareSayisi)) 
-                return true;
-            if(CaprazKontrol(satir,sutun,isaret,kazanmakİcinGerekenKareSayisi)) 
-                return true;
 
-            return false;
-        }
-        /*private string GetCellText(int r,int c)
-        {
-            var ctrl = tableLayoutPanel1.GetControlFromPosition(c,r);
-            return ctrl?.Text ?? "";
-        }*/
-        private bool DikeyKontrol(int sutun,string isaret,int gerekenSira)
-        {
-            int sayac = 0;
-            for(int i = 0;i < N;i++)
-            {
-                if(matrisTahta[i,sutun] == isaret)
-                {
-                    sayac++;
-                    if(sayac == gerekenSira) return true;
-                }
-                else
-                    sayac = 0;
+            if(KareleriSay(x,y,-1,1,isaret) + KareleriSay(x,y,1,-1,isaret) + 1 >= Nkosul) return true; // '/'
 
-            }
-            return false;
-        }
-        private bool YatayKontrol(int satir,string isaret, int gerekenSira)
-        {
-            int sayac = 0;
-            for(int j=0;j<N;j++)
-            {
-                if(matrisTahta[satir,j] == isaret)
-                {
-                    sayac++;
-                    if(sayac==gerekenSira) return true;
-                }
-                else
-                    sayac = 0;
-            }
-            return false;
-        }
-        private bool CaprazKontrol(int x, int y, string isaret, int gerekenSira)
-        {
-            if(KareleriSay(x,y,-1,-1,isaret) + KareleriSay(x,y,1,1,isaret) + 1 >= gerekenSira) 
-                return true; // '\'
 
-            if(KareleriSay(x,y,-1,1,isaret) + KareleriSay(x,y,1,-1,isaret) + 1 >= gerekenSira) 
-                return true; // '/'
+            if(KareleriSay(x,y,-1,0,isaret) + KareleriSay(x,y,1,0,isaret) + 1 >= Nkosul) return true; // Dikey
 
-            // Yatay ve Dikeyi de buna benzer şekilde kontrol edebilirmiş, gerekirse onları buna uyarla.
+            if(KareleriSay(x,y,0,-1,isaret) + KareleriSay(x,y,0,1,isaret) + 1 >= Nkosul) return true; // Yatay
+
 
             return false;
         }
@@ -181,16 +138,6 @@ namespace Satranc
             return sayac;
         }
 
-        /*private bool CaprazBak(string isaret)
-        {
-            bool solUst = true;
-            for(int i = 0;i < tableLayoutPanel1.RowCount;i++)
-            {
-                if(GetCellText(i,i) != isaret) solUst = false;
-            }
-            // Sağ üstten sol alta olan diğer çaprazı da benzer şekilde kontrol etmelisin
-            return solUst;
-        }*/
 
     }
 }

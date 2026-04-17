@@ -38,7 +38,7 @@
             // tictac
             // 
             this.tictac.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tictac.ColumnCount = 8;
+            this.tictac.ColumnCount = 1;
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
@@ -47,9 +47,9 @@
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tictac.Location = new System.Drawing.Point(229, 12);
+            this.tictac.Location = new System.Drawing.Point(301, 22);
             this.tictac.Name = "tictac";
-            this.tictac.RowCount = 8;
+            this.tictac.RowCount = 1;
             this.tictac.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
@@ -104,7 +104,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tictac);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "TikTakTo";
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

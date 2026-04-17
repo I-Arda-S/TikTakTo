@@ -26,6 +26,21 @@ namespace Satranc
         private int Nkosul;
         private bool dur;
 
+        public class GameButton:Button
+        {
+            public GameButton()
+            {
+                this.SetStyle(ControlStyles.Selectable,false);
+                this.Margin = new Padding(1);
+                this.Dock = DockStyle.Fill;
+                this.FlatStyle = FlatStyle.Flat;
+                this.BackColor = Color.PaleTurquoise;
+                this.FlatAppearance.BorderSize = 0;
+                this.NotifyDefault(false);
+            }
+
+        }
+
         private void OyunTahtasiniOlustur(TableLayoutPanel tahta, int en, int boy)
         {
             // Bunlar ana işlevle alakasız ancak her yeni oyunda atanmaları gerekli.
@@ -54,13 +69,9 @@ namespace Satranc
             {
                 for(int j = 0; j<tahta.RowCount;j++)
                 {
-                    Button kare = new Button
+                    GameButton kare = new GameButton
                     {
-                        Dock = DockStyle.Fill,
-                        Tag = new Point(i,j),
-                        Margin = new Padding(0),
-                        Font = new Font("Consolas",fontBoyutu,FontStyle.Regular),
-                        BackColor = Color.PaleTurquoise
+                        Font = new Font("Consolas",fontBoyutu,FontStyle.Regular)
                     };
 
                     kare.Click += Kare_click;
@@ -79,7 +90,7 @@ namespace Satranc
         {
             if(dur) return;
 
-            Button kare = sender as Button;
+            GameButton kare = sender as GameButton;
             var konum = tictac.GetPositionFromControl(kare);
             int x = konum.Row; 
             int y = konum.Column;
@@ -97,13 +108,13 @@ namespace Satranc
                 turXde = true;
             }
 
+            kare.Enabled = false;
+
             if(KontrolEt(x,y,kare.Text))
             {
+                dur=true; 
                 MessageBox.Show("'"+kare.Text+"' kazandı.","Zafer",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                dur=true;
             }
-                
-            kare.Enabled = false;
         }
 
         private bool KontrolEt(int x, int y, string isaret)

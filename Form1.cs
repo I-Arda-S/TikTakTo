@@ -22,7 +22,7 @@ namespace Satranc
 
         private bool turXde;
         private string[,] matrisTahta;
-        private int N=3;
+        private int N=3;        // Kalan başlatıcıları OyunTahtasıOluştur halledecek
         private int Nkosul;
         private bool dur;
 
@@ -35,6 +35,7 @@ namespace Satranc
             if(N >= 5)  Nkosul = 5;
             else        Nkosul = N;
 
+            // Ana işlev işte paneli tuşlarla dolduran
             tahta.Controls.Clear();
             tahta.RowStyles.Clear();
             tahta.ColumnStyles.Clear();
@@ -58,12 +59,9 @@ namespace Satranc
                         Dock = DockStyle.Fill,
                         Tag = new Point(i,j),
                         Margin = new Padding(0),
-                        Font = new Font("Arial",fontBoyutu,FontStyle.Regular),
+                        Font = new Font("Consolas",fontBoyutu,FontStyle.Regular),
                         BackColor = Color.PaleTurquoise
                     };
-                    //if((j%2==0 && i%2==0) || (j%2!=0 && i%2!=0))
-                    //kare.Text = "X";
-                    //kare.BackColor = Color.SandyBrown;
 
                     kare.Click += Kare_click;
                     tahta.Controls.Add(kare,j,i);
@@ -101,7 +99,7 @@ namespace Satranc
 
             if(KontrolEt(x,y,kare.Text))
             {
-                MessageBox.Show("Kazandın.");
+                MessageBox.Show("'"+kare.Text+"' kazandı.","Zafer",MessageBoxButtons.OK,MessageBoxIcon.Information);
                 dur=true;
             }
                 

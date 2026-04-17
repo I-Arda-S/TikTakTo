@@ -37,7 +37,9 @@
             // 
             // tictac
             // 
-            this.tictac.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tictac.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tictac.ColumnCount = 1;
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
@@ -47,7 +49,7 @@
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tictac.Location = new System.Drawing.Point(301, 22);
+            this.tictac.Location = new System.Drawing.Point(168, 12);
             this.tictac.Name = "tictac";
             this.tictac.RowCount = 1;
             this.tictac.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
@@ -58,7 +60,7 @@
             this.tictac.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tictac.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tictac.Size = new System.Drawing.Size(400, 400);
+            this.tictac.Size = new System.Drawing.Size(418, 418);
             this.tictac.TabIndex = 0;
             // 
             // btnSifirla
@@ -73,11 +75,13 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.Controls.Add(this.BoyutSec);
             this.panel1.Controls.Add(this.btnSifirla);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(211, 180);
+            this.panel1.Size = new System.Drawing.Size(150, 419);
             this.panel1.TabIndex = 2;
             // 
             // BoyutSec
@@ -100,9 +104,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(752, 443);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tictac);
+            this.MinimumSize = new System.Drawing.Size(770, 490);
             this.Name = "Form1";
             this.Text = "TikTakTo";
             this.panel1.ResumeLayout(false);

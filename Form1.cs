@@ -26,6 +26,7 @@ namespace Satranc
 
         private bool turXde;
         private string[,] matrisTahta;
+        private List<Point> bosKareler = new List<Point>();
         private int N=3;        // Kalan başlatıcıları OyunTahtasıOluştur halledecek
         private int Nkosul;
         private bool dur;
@@ -51,6 +52,7 @@ namespace Satranc
         {
             // Bunlar ana işlevle alakasız ancak her yeni oyunda atanmaları gerekli.
             matrisTahta = new string[en,boy];
+            bosKareler.Clear();
             dur = false;
             turXde = false;
             if(N >= 5)  Nkosul = 5;
@@ -77,31 +79,29 @@ namespace Satranc
                 {
                     GameButton kare = new GameButton
                     {
-                        Font = new Font("Consolas",fontBoyutu,FontStyle.Regular)
+                        Font = new Font("Consolas",fontBoyutu,FontStyle.Regular),
                     };
 
                     kare.Click += Kare_click;
                     tahta.Controls.Add(kare,j,i);
+                    bosKareler.Add(new Point(i,j));
                 }
             }
         }
 
         private void btnSifirla_Click(object sender,EventArgs e)
         {
-            tmrBotHamle.Enabled = false;
-
             N = BoyutSec.SelectedIndex+3;
             OyunTahtasiniOlustur(tictac,N,N);
 
             zorluk = ZorlukSec.SelectedIndex;
-            botuAktiflestir();
 
             matrisiTexteAktar(); // geçici
         }
 
         private void Kare_click(object sender, EventArgs e)
         {
-            if(dur) return;
+            if(dur) return; 
 
             GameButton kare = sender as GameButton;
             var konum = tictac.GetPositionFromControl(kare);
@@ -112,27 +112,34 @@ namespace Satranc
             {
                 kare.Text = "X";
                 matrisTahta[x,y] = "X";
-                turXde = false;
-
-
             }
             else
             {
                 kare.Text = "O";
                 matrisTahta[x,y] = "O";
-                turXde = true;
-
             }
-
+            turXde = !turXde;
+            bosKareler.Remove(new Point(x,y)); lblKontrol.Text = bosKareler.Count.ToString();
             kare.Enabled = false;
 
             matrisiTexteAktar(); // geçici
 
             if(KontrolEt(x,y,kare.Text))
             {
-                dur=true; 
+                dur=true;
                 MessageBox.Show("'"+kare.Text+"' kazandı.","Zafer",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                return;
             }
+            if(bosKareler.Count == 0)
+            {
+                dur = true;
+                MessageBox.Show("Oyun bitti.","Berabere",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                return;
+            }
+
+            if(turXde)
+                botHamleYapiyor(); // 'O' oynanır oynanmaz botHamle yapsın, kapalıyken bir şey olmaz zaten.
+            
         }
 
         private bool KontrolEt(int x, int y, string isaret)
@@ -181,38 +188,22 @@ namespace Satranc
             }
         }
 
-        private bool botuAktiflestir()
+        private bool botHamleYapiyor()
         {
-            if(zorluk==0)
-            {
-                tmrBotHamle.Enabled = false;
-                return false;
-            }
-            else
-            {
-                tmrBotHamle.Enabled = true;
-                return true;
-            }
+            if(zorluk==0) return false;
+            else if(zorluk==1) BotRastgeleOynar();
 
+            return true;
         }
 
         private void BotRastgeleOynar()
         {
-            List<Point> hamleyeMusait = new List<Point>(); // Buna her seferinde bakmasına gerek yok, tıklama yapıldıkça değişçek şekilde düzenleyeyim sonra
-            for(int i=0; i<N;i++)
-            {
-                for(int j=0;j<N; j++)
-                {
-                    if(matrisTahta[i,j]==null)
-                        hamleyeMusait.Add(new Point(i,j));
-                }
-            }
-            if(hamleyeMusait.Count==0) return;
+            if(bosKareler.Count==0) return;
 
             Random rng = new Random();
-            int defaHamleYap = rng.Next(0, hamleyeMusait.Count);
-            int sx = hamleyeMusait[defaHamleYap].X;
-            int sy = hamleyeMusait[defaHamleYap].Y;
+            int hedefKare = rng.Next(0, bosKareler.Count);
+            int sx = bosKareler[hedefKare].X;
+            int sy = bosKareler[hedefKare].Y;
 
             Control c = tictac.GetControlFromPosition(sy,sx);
             if(c is GameButton buton)
@@ -222,19 +213,6 @@ namespace Satranc
             matrisiTexteAktar(); // geçici
         }
 
-        private void tmrBotHamle_Tick(object sender,EventArgs e) // Oyuncu yeterince hızlı basarsa timer tetiklenmeden bot yerine hamle yapmış olucak. Şimdilik aralık değerini düşürdüm bu yüzden.
-        {
-            if(turXde)
-            {
-                if(zorluk==1) // Rastgele
-                {
-                    BotRastgeleOynar();
-                    turXde = false;
-                }
-            }
-            else
-                return;
 
-        }
     }
 }

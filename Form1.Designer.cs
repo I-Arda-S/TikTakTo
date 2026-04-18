@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tictac = new System.Windows.Forms.TableLayoutPanel();
             this.btnSifirla = new System.Windows.Forms.Button();
@@ -36,8 +35,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.BoyutSec = new System.Windows.Forms.ComboBox();
             this.ZorlukSec = new System.Windows.Forms.ComboBox();
-            this.tmrBotHamle = new System.Windows.Forms.Timer(this.components);
             this.matrisiGor = new System.Windows.Forms.TextBox();
+            this.lblKontrol = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -85,6 +84,7 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.lblKontrol);
             this.panel1.Controls.Add(this.matrisiGor);
             this.panel1.Controls.Add(this.ZorlukSec);
             this.panel1.Controls.Add(this.label1);
@@ -134,11 +134,6 @@
             this.ZorlukSec.Size = new System.Drawing.Size(121, 26);
             this.ZorlukSec.TabIndex = 4;
             // 
-            // tmrBotHamle
-            // 
-            this.tmrBotHamle.Interval = 1000;
-            this.tmrBotHamle.Tick += new System.EventHandler(this.tmrBotHamle_Tick);
-            // 
             // matrisiGor
             // 
             this.matrisiGor.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
@@ -148,6 +143,15 @@
             this.matrisiGor.ReadOnly = true;
             this.matrisiGor.Size = new System.Drawing.Size(121, 115);
             this.matrisiGor.TabIndex = 3;
+            // 
+            // lblKontrol
+            // 
+            this.lblKontrol.AutoSize = true;
+            this.lblKontrol.Location = new System.Drawing.Point(20, 190);
+            this.lblKontrol.Name = "lblKontrol";
+            this.lblKontrol.Size = new System.Drawing.Size(44, 16);
+            this.lblKontrol.TabIndex = 3;
+            this.lblKontrol.Text = "label2";
             // 
             // Form1
             // 
@@ -174,8 +178,8 @@
         private System.Windows.Forms.ComboBox BoyutSec;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox ZorlukSec;
-        private System.Windows.Forms.Timer tmrBotHamle;
         private System.Windows.Forms.TextBox matrisiGor;
+        private System.Windows.Forms.Label lblKontrol;
     }
 }
 

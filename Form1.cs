@@ -223,27 +223,67 @@ namespace Satranc
         {
             if(bosKareler.Count==0) return;
 
+            int uyari1;
+            if(N <= 5) uyari1 = Nkosul;
+            else uyari1 = Nkosul-1;     // N 5'ten büyükken 3.kareden itibaren engellesin 4 değilde.
+
             /*if(KareleriSay(x,y,-1,-1,isaret) + KareleriSay(x,y,1,1,isaret) + 1 >= Nkosul) return true; // '\'
-            if(KareleriSay(x,y,-1,1,isaret) + KareleriSay(x,y,1,-1,isaret) + 1 >= Nkosul) return true; // */
+            if(KareleriSay(x,y,-1,1,isaret) + KareleriSay(x,y,1,-1,isaret) + 1 >= Nkosul) return true; // Bunlara göre çapraz kuralını eklicem */
 
-            if(KareleriSay(sonHamleKonumu.X, sonHamleKonumu.Y, 0,-1,"O") + KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y,0,1,"O") + 2 >= Nkosul){
+            if(KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y,0,-1,"O") + KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y,0,1,"O") + 2 >= uyari1)
+            {
                 // Yatayda hamle yapçak, X konumunu sabit tutup uygun bir Y seçmeli.
-
                 var bulunanNoktalar = bosKareler.Where(p => p.X == sonHamleKonumu.X).ToList();
                 Random rng = new Random();
-                int yHedef = rng.Next(0, bulunanNoktalar.Count);
+                Point hedefNokta = new Point(); // Seçilen noktayı tutmak için
 
-                Control c = tictac.GetControlFromPosition(bulunanNoktalar[yHedef].Y, sonHamleKonumu.X);
-                if(c is GameButton btn) Kare_click(c, EventArgs.Empty);
+                if(bulunanNoktalar.Count <= 2)
+                {
+                    // Elimizde zaten 0, 1 veya 2 nokta varsa doğrudan bunlardan birini seç
+                    if(bulunanNoktalar.Count > 0)
+                    {
+                        int i = rng.Next(0,bulunanNoktalar.Count);
+                        hedefNokta = bulunanNoktalar[i];
+                    }
+                }
+                else
+                {
+                    // Hedefe en yakın alt ve üst komşuları bul
+                    var ustKomsu = bulunanNoktalar.Where(p => p.Y > sonHamleKonumu.Y).OrderBy(p => p.Y).Cast<Point?>().FirstOrDefault();
+                    var altKomsu = bulunanNoktalar.Where(p => p.Y < sonHamleKonumu.Y).OrderByDescending(p => p.Y).Cast<Point?>().FirstOrDefault();
+
+                    // Sadece bulunanları (null olmayanları) yeni bir listeye al
+                    var komsuListesi = new List<Point?> { ustKomsu,altKomsu }.Where(p => p.HasValue).Select(p => p.Value).ToList();
+
+                    // Bu iki komşudan birini rastgele seç
+                    if(komsuListesi.Count > 0)
+                    {
+                        hedefNokta = komsuListesi[rng.Next(0,komsuListesi.Count)];
+                    }
+                } // Olmadı tam, başka yöntemlere bak, rastgele indis seçme kullanmasam iyi olucak sorun ondan başlıyo
+
+                try
+                {
+                    Control c = tictac.GetControlFromPosition(hedefNokta.Y ,sonHamleKonumu.X);
+                    if(c is GameButton btn) Kare_click(c,EventArgs.Empty);
+                }
+                catch { BotRastgeleOynar(); }
+
             }
-            else if(KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y,-1,0,"O") + KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y, 1,0,"O") + 2 >= Nkosul)
+            else if(KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y,-1,0,"O") + KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y,1,0,"O") + 2 >= uyari1)
             { // Dikeyde, ters işte
                 var bulunanNoktalar = bosKareler.Where(p => p.Y == sonHamleKonumu.Y).ToList();
                 Random rng = new Random();
-                int xHedef = rng.Next(0,bulunanNoktalar.Count);
+                int xHedef = rng.Next(0,bulunanNoktalar.Count); 
 
-                Control c = tictac.GetControlFromPosition(sonHamleKonumu.Y,bulunanNoktalar[xHedef].X);
-                if(c is GameButton btn) Kare_click(c,EventArgs.Empty);
+                try
+                {
+                    Control c = tictac.GetControlFromPosition(sonHamleKonumu.Y,bulunanNoktalar[xHedef].X);
+                    if(c is GameButton btn) Kare_click(c,EventArgs.Empty);
+                }
+                catch { BotRastgeleOynar(); }
+
+
             }
             else
                 BotRastgeleOynar();

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Satranc
 {
@@ -31,6 +32,8 @@ namespace Satranc
         private int Nkosul;
         private bool dur;
         private int zorluk;
+
+        private Point sonHamleKonumu;
 
         public class GameButton:Button
         {
@@ -137,6 +140,8 @@ namespace Satranc
                 return;
             }
 
+            sonHamleKonumu.X = x;
+            sonHamleKonumu.Y = y;
             if(turXde)
                 botHamleYapiyor(); // 'O' oynanır oynanmaz botHamle yapsın, kapalıyken bir şey olmaz zaten.
             
@@ -192,8 +197,9 @@ namespace Satranc
         {
             if(zorluk==0) return false;
             else if(zorluk==1) BotRastgeleOynar();
+            else if(zorluk==2) BotKolayOynar();
 
-            return true;
+                return true;
         }
 
         private void BotRastgeleOynar()
@@ -213,6 +219,42 @@ namespace Satranc
             matrisiTexteAktar(); // geçici
         }
 
+        private void BotKolayOynar() // Bitişik mi kontrolleri yapıyom mesela bitişik 2 yerine boşluklu 2 koyunca fark etmeycek
+        {
+            if(bosKareler.Count==0) return;
+
+            /*if(KareleriSay(x,y,-1,-1,isaret) + KareleriSay(x,y,1,1,isaret) + 1 >= Nkosul) return true; // '\'
+            if(KareleriSay(x,y,-1,1,isaret) + KareleriSay(x,y,1,-1,isaret) + 1 >= Nkosul) return true; // */
+
+            if(KareleriSay(sonHamleKonumu.X, sonHamleKonumu.Y, 0,-1,"O") + KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y,0,1,"O") + 2 >= Nkosul){
+                // Yatayda hamle yapçak, X konumunu sabit tutup uygun bir Y seçmeli.
+
+                var bulunanNoktalar = bosKareler.Where(p => p.X == sonHamleKonumu.X).ToList();
+                Random rng = new Random();
+                int yHedef = rng.Next(0, bulunanNoktalar.Count);
+
+                Control c = tictac.GetControlFromPosition(bulunanNoktalar[yHedef].Y, sonHamleKonumu.X);
+                if(c is GameButton btn) Kare_click(c, EventArgs.Empty);
+            }
+            else if(KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y,-1,0,"O") + KareleriSay(sonHamleKonumu.X,sonHamleKonumu.Y, 1,0,"O") + 2 >= Nkosul)
+            { // Dikeyde, ters işte
+                var bulunanNoktalar = bosKareler.Where(p => p.Y == sonHamleKonumu.Y).ToList();
+                Random rng = new Random();
+                int xHedef = rng.Next(0,bulunanNoktalar.Count);
+
+                Control c = tictac.GetControlFromPosition(sonHamleKonumu.Y,bulunanNoktalar[xHedef].X);
+                if(c is GameButton btn) Kare_click(c,EventArgs.Empty);
+            }
+            else
+                BotRastgeleOynar();
+
+            matrisiTexteAktar();
+            /*
+            Ardışık 2 (N-1) tane olunca engelle
+            Bunların arasında 1 boşluk olursa engelle -farklı zorluk ayarı olur-
+            Rastgele oyna, gibi bir şey planlıyom algoritmasında
+            */
+        }
 
     }
 }

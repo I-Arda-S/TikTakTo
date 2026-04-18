@@ -128,7 +128,8 @@
             this.ZorlukSec.FormattingEnabled = true;
             this.ZorlukSec.Items.AddRange(new object[] {
             "Yok",
-            "Rastgele Hamle Yapar"});
+            "Rastgele Hamle Yapar",
+            "Kolay Zorluk"});
             this.ZorlukSec.Location = new System.Drawing.Point(13, 144);
             this.ZorlukSec.Name = "ZorlukSec";
             this.ZorlukSec.Size = new System.Drawing.Size(121, 26);

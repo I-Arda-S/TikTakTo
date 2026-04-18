@@ -28,12 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tictac = new System.Windows.Forms.TableLayoutPanel();
             this.btnSifirla = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.BoyutSec = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.BoyutSec = new System.Windows.Forms.ComboBox();
+            this.ZorlukSec = new System.Windows.Forms.ComboBox();
+            this.tmrBotHamle = new System.Windows.Forms.Timer(this.components);
+            this.matrisiGor = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,6 +85,8 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.matrisiGor);
+            this.panel1.Controls.Add(this.ZorlukSec);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.BoyutSec);
             this.panel1.Controls.Add(this.btnSifirla);
@@ -88,6 +94,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(150, 419);
             this.panel1.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Consolas", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label1.Location = new System.Drawing.Point(18, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(103, 27);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Ayarlar";
             // 
             // BoyutSec
             // 
@@ -106,15 +122,32 @@
             this.BoyutSec.Size = new System.Drawing.Size(121, 26);
             this.BoyutSec.TabIndex = 1;
             // 
-            // label1
+            // ZorlukSec
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Consolas", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(18, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 27);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Ayarlar";
+            this.ZorlukSec.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.ZorlukSec.FormattingEnabled = true;
+            this.ZorlukSec.Items.AddRange(new object[] {
+            "Yok",
+            "Rastgele Hamle Yapar"});
+            this.ZorlukSec.Location = new System.Drawing.Point(13, 144);
+            this.ZorlukSec.Name = "ZorlukSec";
+            this.ZorlukSec.Size = new System.Drawing.Size(121, 26);
+            this.ZorlukSec.TabIndex = 4;
+            // 
+            // tmrBotHamle
+            // 
+            this.tmrBotHamle.Interval = 1000;
+            this.tmrBotHamle.Tick += new System.EventHandler(this.tmrBotHamle_Tick);
+            // 
+            // matrisiGor
+            // 
+            this.matrisiGor.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.matrisiGor.Location = new System.Drawing.Point(13, 289);
+            this.matrisiGor.Multiline = true;
+            this.matrisiGor.Name = "matrisiGor";
+            this.matrisiGor.ReadOnly = true;
+            this.matrisiGor.Size = new System.Drawing.Size(121, 115);
+            this.matrisiGor.TabIndex = 3;
             // 
             // Form1
             // 
@@ -140,6 +173,9 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ComboBox BoyutSec;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox ZorlukSec;
+        private System.Windows.Forms.Timer tmrBotHamle;
+        private System.Windows.Forms.TextBox matrisiGor;
     }
 }
 
